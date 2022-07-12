@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'CookieRun-Regular';
+  src: url('../fonts/CookieRun Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+}

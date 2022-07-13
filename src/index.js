@@ -25,8 +25,13 @@ import round2ObjectIncorrect_3 from './assets/images/8. 2라운드오답아이�
 
 import nextRoundImg from './assets/images/10. 다음라운드 안내 화면.png';
 import questionImg from './assets/images/9. 3라운드_문제화면.png';
+import answerImg from './assets/images/9. 3라운드_정답화면.png';
+import thumbUp from './assets/images/9. 3라운드_엄지up.png';
+import thumbDown from './assets/images/9. 3라운드_엄지down.png';
 
 import playButtonImg from './assets/images/플레이버튼.png';
+import resetButtonImg from './assets/images/리셋버튼.png';
+
 import bgmAud from './assets/audios/bgm.mp3';
 
 let centerX, centerY;
@@ -72,7 +77,12 @@ class MyGame extends Phaser.Scene {
     this.load.image('round2ObjectImgIncorrect_3', round2ObjectIncorrect_3);
     this.load.image('nextRoundImg', nextRoundImg);
     this.load.image('questionImg', questionImg);
+    this.load.image('answerImg', answerImg);
     this.load.image('playBtn', playButtonImg);
+    this.load.image('resetBtn', resetButtonImg);
+    this.load.image('thumbUp', thumbUp);
+    this.load.image('thumbDown', thumbDown);
+
     this.load.audio('bgm', bgmAud);
 
     const loadFont = (name, url) => {
@@ -182,7 +192,7 @@ class MyGame extends Phaser.Scene {
             nextRoundSignText = this.add.text(
               220,
               450,
-              '1라운드 미션 성공!\n2라운드에서는 환경을 아프게 하는 것들이 있던\n자리에 환경을 위한 아이템을 채워 보세요!',
+              '1라운드 미션 성공!\n2라운드에서는 환경을 아프게 하는 것들이\n있던 자리에 환경을 위한 아이템을 채워 보세요!',
               {
                 font: '50px CookieRun-Regular',
                 fill: '#007bc6',
@@ -217,6 +227,7 @@ class MyGame extends Phaser.Scene {
                 let obj = dragObjects[index];
                 this.children.bringToTop(obj);
                 obj.input.draggable = false;
+                !obj.data.correct && obj.setVisible(false);
               }
 
               this.children.bringToTop(nextRoundSignImg);
@@ -227,7 +238,11 @@ class MyGame extends Phaser.Scene {
                 '2라운드 미션 성공!\n친환경 마을이 만들어졌어요!\n다음 라운드로 넘어가 볼까요?'
               );
               nextRoundSignText.setVisible(true);
-              //Todo.. next Round
+
+              this.time.addEvent({
+                delay: 5000,
+                callback: () => this.goRound3(),
+              });
             }
           } else {
             gameObject.x = gameObject.input.dragStartX;
@@ -371,6 +386,171 @@ class MyGame extends Phaser.Scene {
     }
 
     round1DropZone.destroy();
+  }
+
+  goRound3() {
+    for (let index = 0; index < dragObjects.length; index++) {
+      dragObjects[index].setVisible(false);
+    }
+
+    nextRoundSignImg.destroy();
+    nextRoundSignText.destroy();
+    round2BackgorundImg.destroy();
+    let round = 1;
+    let comment, answer, clickFlag;
+    round3BackgorundImg = this.add.image(centerX, centerY, 'round3Img');
+    this.fullResize(round3BackgorundImg);
+    const questionImg = this.add.image(0, 0, 'questionImg').setScale(0.2);
+    const answerImg = this.add.image(0, 0, 'answerImg').setScale(0.2);
+    const questionText = this.add
+      .text(0, 0, '', {
+        font: '60px CookieRun-Regular',
+        fill: '#007bc6',
+        align: 'center',
+      })
+      .setOrigin(0.5);
+
+    const answerText = this.add
+      .text(0, 0, '', {
+        font: '60px CookieRun-Regular',
+        fill: '#007bc6',
+        align: 'center',
+      })
+      .setOrigin(0.5);
+
+    const questionContainer = this.add.container(centerX, centerY - 150, [
+      questionImg,
+      questionText,
+    ]);
+    const answerContainer = this.add.container(centerX, centerY + 200, [
+      answerImg,
+      answerText,
+    ]);
+
+    answerContainer.setVisible(false);
+
+    const thumbUp = this.add
+      .image(centerX - 300, centerY + 200, 'thumbUp')
+      .setScale(0.15)
+      .setInteractive();
+    const thumbDown = this.add
+      .image(centerX + 300, centerY + 200, 'thumbDown')
+      .setScale(0.15)
+      .setInteractive();
+
+    const questionData = [
+      '휴대폰 충전기는 자주 사용하니까\n편리하게 항상 꽂아둬요.||down||사용할 때만 플러그를 꽂으면\n전기를 아낄 수 있어요!',
+      '마트에 갈 때는 장바구니를 사용해요.||up',
+      '샤워는 깨끗이! 매일 거품 목욕을 해요.||down||매일 거품 목욕을 하면\n물을 많이 쓰게 되고, 환경이 오염돼요.',
+      '양치를 할 때는 컵을 사용해요!||up',
+      '쓰레기는 모두 모아 한 번에 버려요!||down||분리배출을 해야 해요!\n재활용을 하면 자원을 절약할 수 있어요.',
+      '불필요한 물건을 사지 않는 것도\n환경을 위한 소비예요.||up',
+      '나에게 맞지 않는 옷은 바로바로\n정리해서 버려요.||down||깨끗하게 입은 옷은 필요한\n사람을 위해 기부할 수 있어요.',
+    ];
+
+    const setRound = () => {
+      const data = questionData[round - 1];
+      const question = data.split('||')[0];
+      answer = data.split('||')[1];
+      questionText.setText(question);
+      if (answer == 'down') {
+        comment = data.split('||')[2];
+      }
+      thumbDown.setVisible(true);
+      thumbUp.setVisible(true);
+      answerContainer.setVisible(false);
+    };
+
+    setRound();
+
+    const nextRound = () => {
+      clickFlag = true;
+      round++;
+      this.time.addEvent({
+        delay: 3000,
+        callback: () => {
+          if (round > questionData.length) {
+            thumbUp.setVisible(false);
+            thumbDown.setVisible(false);
+            questionContainer.setVisible(false);
+            answerContainer.setVisible(false);
+            round3BackgorundImg.destroy();
+            this.fullResize(this.add.image(centerX, centerY, 'outroImg'));
+            this.time.addEvent({
+              delay: 2000,
+              callback: () => {
+                const resetBtn = this.add
+                  .image(centerX, centerY + 250, 'resetBtn')
+                  .setScale(0.5)
+                  .setInteractive();
+                resetBtn.on('pointerdown', (e) => {
+                  window.location.reload();
+                });
+                resetBtn.on('pointerout', () => {
+                  this.input.setDefaultCursor('auto');
+                });
+                resetBtn.on('pointerover', () => {
+                  this.input.setDefaultCursor('pointer');
+                });
+              },
+            });
+          } else {
+            setRound();
+          }
+          clickFlag = false;
+        },
+      });
+    };
+
+    const answerComment = ['짝짝짝~ 잘했어요!', '와, 정답이에요!'];
+
+    thumbUp.on('pointerdown', () => {
+      if (clickFlag) return;
+      //정답
+      if (answer == 'up') {
+        questionText.setText(Phaser.Math.RND.pick(answerComment));
+      } else {
+        thumbUp.setVisible(false);
+        questionText.setText('땡! 틀렸어요!');
+        answerText.setText(comment);
+        answerContainer.setVisible(true);
+      }
+      thumbDown.setVisible(false);
+      nextRound();
+    });
+
+    thumbDown.on('pointerdown', () => {
+      if (clickFlag) return;
+      thumbDown.setVisible(false);
+      thumbUp.setVisible(false);
+      //정답
+      if (answer == 'down') {
+        questionText.setText(Phaser.Math.RND.pick(answerComment));
+        answerText.setText(comment);
+        answerContainer.setVisible(true);
+        thumbDown.setVisible(false);
+      }
+      //오답
+      else {
+        thumbUp.setVisible(true);
+        questionText.setText('땡! 틀렸어요!');
+      }
+      nextRound();
+    });
+
+    thumbUp.on('pointerout', () => {
+      this.input.setDefaultCursor('auto');
+    });
+    thumbUp.on('pointerover', () => {
+      this.input.setDefaultCursor('pointer');
+    });
+
+    thumbDown.on('pointerout', () => {
+      this.input.setDefaultCursor('auto');
+    });
+    thumbDown.on('pointerover', () => {
+      this.input.setDefaultCursor('pointer');
+    });
   }
 
   fullResize(obj) {

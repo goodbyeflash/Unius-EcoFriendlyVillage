@@ -1,38 +1,38 @@
 import Phaser from 'phaser';
-import introImg from './assets/images/1. 인트로.png';
-import howtoImg from './assets/images/2. 문제 설명.png';
-import round1Img from './assets/images/3. 1라운드배경화면.png';
-import round2Img from './assets/images/4. 2라운드배경화면.png';
-import round3Img from './assets/images/5. 3라운드배경화면.png';
-import outroImg from './assets/images/6. 아웃트로.png';
-import trashImg from './assets/images/7. 1라운드_휴지통.png';
-import trashCommentImg from './assets/images/휴지통 위 문구.png';
-import round1Object_1 from './assets/images/7. 1라운드아이템_1.png';
-import round1Object_2 from './assets/images/7. 1라운드아이템_2.png';
-import round1Object_3 from './assets/images/7. 1라운드아이템_3.png';
-import round1Object_4 from './assets/images/7. 1라운드아이템_4.png';
-import round1Object_5 from './assets/images/7. 1라운드아이템_5.png';
+import introImg from '../public/images/1. 인트로.png';
+import howtoImg from '../public/images/2. 문제 설명.png';
+import round1Img from '../public/images/3. 1라운드배경화면.png';
+import round2Img from '../public/images/4. 2라운드배경화면.png';
+import round3Img from '../public/images/5. 3라운드배경화면.png';
+import outroImg from '../public/images/6. 아웃트로.png';
+import trashImg from '../public/images/7. 1라운드_휴지통.png';
+import trashCommentImg from '../public/images/휴지통 위 문구.png';
+import round1Object_1 from '../public/images/7. 1라운드아이템_1.png';
+import round1Object_2 from '../public/images/7. 1라운드아이템_2.png';
+import round1Object_3 from '../public/images/7. 1라운드아이템_3.png';
+import round1Object_4 from '../public/images/7. 1라운드아이템_4.png';
+import round1Object_5 from '../public/images/7. 1라운드아이템_5.png';
 
-import round2Object_1 from './assets/images/8. 2라운드아이템_1.png';
-import round2Object_2 from './assets/images/8. 2라운드아이템_2.png';
-import round2Object_3 from './assets/images/8. 2라운드아이템_3.png';
-import round2Object_4 from './assets/images/8. 2라운드아이템_4.png';
-import round2Object_5 from './assets/images/8. 2라운드아이템_5.png';
+import round2Object_1 from '../public/images/8. 2라운드아이템_1.png';
+import round2Object_2 from '../public/images/8. 2라운드아이템_2.png';
+import round2Object_3 from '../public/images/8. 2라운드아이템_3.png';
+import round2Object_4 from '../public/images/8. 2라운드아이템_4.png';
+import round2Object_5 from '../public/images/8. 2라운드아이템_5.png';
 
-import round2ObjectIncorrect_1 from './assets/images/8. 2라운드오답아이템_1.png';
-import round2ObjectIncorrect_2 from './assets/images/8. 2라운드오답아이템_2.png';
-import round2ObjectIncorrect_3 from './assets/images/8. 2라운드오답아이템_3.png';
+import round2ObjectIncorrect_1 from '../public/images/8. 2라운드오답아이템_1.png';
+import round2ObjectIncorrect_2 from '../public/images/8. 2라운드오답아이템_2.png';
+import round2ObjectIncorrect_3 from '../public/images/8. 2라운드오답아이템_3.png';
 
-import nextRoundImg from './assets/images/10. 다음라운드 안내 화면.png';
-import questionImg from './assets/images/9. 3라운드_문제화면.png';
-import answerImg from './assets/images/9. 3라운드_정답화면.png';
-import thumbUp from './assets/images/9. 3라운드_엄지up.png';
-import thumbDown from './assets/images/9. 3라운드_엄지down.png';
+import nextRoundImg from '../public/images/10. 다음라운드 안내 화면.png';
+import questionImg from '../public/images/9. 3라운드_문제화면.png';
+import answerImg from '../public/images/9. 3라운드_정답화면.png';
+import thumbUp from '../public/images/9. 3라운드_엄지up.png';
+import thumbDown from '../public/images/9. 3라운드_엄지down.png';
 
-import playButtonImg from './assets/images/플레이버튼.png';
-import resetButtonImg from './assets/images/리셋버튼.png';
+import playButtonImg from '../public/images/플레이버튼.png';
+import resetButtonImg from '../public/images/리셋버튼.png';
 
-import bgmAud from './assets/audios/bgm.mp3';
+import bgmAud from '../public/audios/bgm.mp3';
 
 let centerX, centerY;
 let introBackgroundImg,
@@ -188,7 +188,7 @@ class MyGame extends Phaser.Scene {
             this.input.setDefaultCursor('auto');
             nextRoundSignImg = this.add
               .image(centerX, centerY, 'nextRoundImg')
-              .setScale(0.2);
+              .setScale(0.8);
             nextRoundSignText = this.add.text(
               220,
               450,
@@ -316,7 +316,7 @@ class MyGame extends Phaser.Scene {
     nextRoundSignImg.setVisible(false);
     trashObj.setVisible(false);
     trashTxtObj.setVisible(false);
-    this.add.image(centerX, 930, 'questionImg').setScale(0.15);
+    this.add.image(centerX, 930, 'questionImg').setScale(0.6);
 
     const round2Objects = [
       'round2ObjectImg_1',
@@ -400,8 +400,8 @@ class MyGame extends Phaser.Scene {
     let comment, answer, clickFlag;
     round3BackgorundImg = this.add.image(centerX, centerY, 'round3Img');
     this.fullResize(round3BackgorundImg);
-    const questionImg = this.add.image(0, 0, 'questionImg').setScale(0.2);
-    const answerImg = this.add.image(0, 0, 'answerImg').setScale(0.2);
+    const questionImg = this.add.image(0, 0, 'questionImg').setScale(0.8);
+    const answerImg = this.add.image(0, 0, 'answerImg').setScale(0.8);
     const questionText = this.add
       .text(0, 0, '', {
         font: '60px CookieRun-Regular',
@@ -422,7 +422,7 @@ class MyGame extends Phaser.Scene {
       questionImg,
       questionText,
     ]);
-    const answerContainer = this.add.container(centerX, centerY + 200, [
+    const answerContainer = this.add.container(centerX + 14, centerY + 200, [
       answerImg,
       answerText,
     ]);
@@ -563,13 +563,13 @@ class MyGame extends Phaser.Scene {
 
 const config = {
   type: Phaser.AUTO,
-  parent: 'phaser-example',
-  width: 1920,
-  height: 1080,
   scene: MyGame,
+  parent: 'phaser-game',
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 1920,
+    height: 1080,
   },
 };
 

@@ -40,7 +40,7 @@ let introBackgroundImg,
   round1BackgorundImg,
   round2BackgorundImg,
   round3BackgorundImg;
-let nextRoundSignImg, nextRoundSignText;
+let nextRoundSignImg, nextRoundSignText, nextRoundContainer;
 let trashTxtObj, trashObj;
 let round1DropZone;
 let nowRound = 1;
@@ -187,19 +187,26 @@ class MyGame extends Phaser.Scene {
           if (dragCount == 0) {
             this.input.setDefaultCursor('auto');
             nextRoundSignImg = this.add
-              .image(centerX, centerY, 'nextRoundImg')
+              .image(0, 0, 'nextRoundImg')
               .setScale(0.8);
-            nextRoundSignText = this.add.text(
-              220,
-              450,
-              '1라운드 미션 성공!\n2라운드에서는 환경을 아프게 하는 것들이\n있던 자리에 환경을 위한 아이템을 채워 보세요!',
-              {
-                font: '50px CookieRun-Regular',
-                fill: '#007bc6',
-                align: 'center',
-                fixedWidth: 1500,
-              }
-            );
+            nextRoundSignText = this.add
+              .text(
+                0,
+                +10,
+                '1라운드 미션 성공!\n2라운드에서는 환경을 아프게 하는 것들이\n있던 자리에 환경을 위한 아이템을\n채워 보세요!',
+                {
+                  font: '50px CookieRun-Regular',
+                  fill: '#007bc6',
+                  align: 'center',
+                }
+              )
+              .setOrigin(0.5);
+
+            nextRoundContainer = this.add.container(centerX, centerY, [
+              nextRoundSignImg,
+              nextRoundSignText,
+            ]);
+
             this.time.addEvent({
               delay: 5000,
               callback: () => this.goRound2(),
@@ -230,14 +237,27 @@ class MyGame extends Phaser.Scene {
                 !obj.data.correct && obj.setVisible(false);
               }
 
-              this.children.bringToTop(nextRoundSignImg);
-              this.children.bringToTop(nextRoundSignText);
+              nextRoundSignImg = this.add
+                .image(0, 0, 'nextRoundImg')
+                .setScale(0.8);
 
-              nextRoundSignImg.setVisible(true);
-              nextRoundSignText.setText(
-                '2라운드 미션 성공!\n친환경 마을이 만들어졌어요!\n다음 라운드로 넘어가 볼까요?'
-              );
-              nextRoundSignText.setVisible(true);
+              nextRoundSignText = this.add
+                .text(
+                  0,
+                  +10,
+                  '2라운드 미션 성공!\n친환경 마을이 만들어졌어요!\n다음 라운드로 넘어가 볼까요?',
+                  {
+                    font: '50px CookieRun-Regular',
+                    fill: '#007bc6',
+                    align: 'center',
+                  }
+                )
+                .setOrigin(0.5);
+
+              nextRoundContainer = this.add.container(centerX, centerY, [
+                nextRoundSignImg,
+                nextRoundSignText,
+              ]);
 
               this.time.addEvent({
                 delay: 5000,
